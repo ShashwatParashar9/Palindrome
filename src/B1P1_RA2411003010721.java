@@ -1,24 +1,28 @@
 import java.util.Scanner;
 
-import java.util.Scanner;
+public class B1P1_RA2411003010721 {
 
-public class B1P1_RA2411003010721  {
+    // Method to check palindrome after normalization
+    public static boolean isPalindrome(String input) {
 
-    // Recursive method to check palindrome
-    public static boolean isPalindrome(String input, int start, int end) {
+        // Step 1: Normalize string
+        // Remove all non-alphanumeric characters (including spaces)
+        // Convert to lowercase
+        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        // Base Condition: If pointers cross or meet
-        if (start >= end) {
-            return true;
+        // Step 2: Apply two-pointer logic
+        int start = 0;
+        int end = normalized.length() - 1;
+
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
         }
 
-        // If characters do not match
-        if (input.charAt(start) != input.charAt(end)) {
-            return false;
-        }
-
-        // Recursive call for inner substring
-        return isPalindrome(input, start + 1, end - 1);
+        return true;
     }
 
     public static void main(String[] args) {
@@ -28,10 +32,8 @@ public class B1P1_RA2411003010721  {
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        boolean result = isPalindrome(input, 0, input.length() - 1);
-
-        if (result) {
-            System.out.println("Palindrome ✅");
+        if (isPalindrome(input)) {
+            System.out.println("Palindrome ✅ (Ignoring spaces & case)");
         } else {
             System.out.println("Not a Palindrome ❌");
         }
