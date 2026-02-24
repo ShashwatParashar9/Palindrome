@@ -1,78 +1,26 @@
 import java.util.Scanner;
 
-public class Main{
+import java.util.Scanner;
 
-    // Node class for Singly Linked List
-    static class Node {
-        char data;
-        Node next;
+public class B1P1_RA2411003010721  {
 
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
+    // Recursive method to check palindrome
+    public static boolean isPalindrome(String input, int start, int end) {
 
-    // Function to check palindrome
-    public static boolean isPalindrome(String input) {
-
-        if (input == null || input.length() == 0) {
+        // Base Condition: If pointers cross or meet
+        if (start >= end) {
             return true;
         }
 
-        // Step 1: Convert string to linked list
-        Node head = new Node(input.charAt(0));
-        Node current = head;
-
-        for (int i = 1; i < input.length(); i++) {
-            current.next = new Node(input.charAt(i));
-            current = current.next;
+        // If characters do not match
+        if (input.charAt(start) != input.charAt(end)) {
+            return false;
         }
 
-        // Step 2: Find middle using Fast & Slow pointer
-        Node slow = head;
-        Node fast = head;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        // Step 3: Reverse second half
-        Node secondHalf = reverse(slow);
-
-        // Step 4: Compare first half and reversed second half
-        Node firstHalf = head;
-        Node tempSecond = secondHalf;
-
-        while (tempSecond != null) {
-            if (firstHalf.data != tempSecond.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            tempSecond = tempSecond.next;
-        }
-
-        return true;
+        // Recursive call for inner substring
+        return isPalindrome(input, start + 1, end - 1);
     }
 
-    // Function to reverse linked list
-    public static Node reverse(Node head) {
-        Node prev = null;
-        Node current = head;
-        Node nextNode;
-
-        while (current != null) {
-            nextNode = current.next;
-            current.next = prev;
-            prev = current;
-            current = nextNode;
-        }
-
-        return prev;
-    }
-
-    // Main Method
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -80,7 +28,9 @@ public class Main{
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        if (isPalindrome(input)) {
+        boolean result = isPalindrome(input, 0, input.length() - 1);
+
+        if (result) {
             System.out.println("Palindrome ✅");
         } else {
             System.out.println("Not a Palindrome ❌");
