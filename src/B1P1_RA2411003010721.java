@@ -1,61 +1,91 @@
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.Scanner;
 
-/*
- * =====================================================
- * MAIN CLASS - UseCase6PalindromeCheckerApp
- * =====================================================
- *
- * Use Case 6: Queue + Stack Fairness Check
- *
- * Description:
- * This class demonstrates palindrome validation using
- * two data structures:
- * - Queue (FIFO)
- * - Stack (LIFO)
- *
- * Version: 6.0
- */
+public class Main{
 
-public class Main {
+    // Node class for Singly Linked List
+    static class Node {
+        char data;
+        Node next;
 
-    /**
-     * Application entry point for UC6.
-     *
-     * @param args Command-line arguments
-     */
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    // Function to check palindrome
+    public static boolean isPalindrome(String input) {
+
+        if (input == null || input.length() == 0) {
+            return true;
+        }
+
+        // Step 1: Convert string to linked list
+        Node head = new Node(input.charAt(0));
+        Node current = head;
+
+        for (int i = 1; i < input.length(); i++) {
+            current.next = new Node(input.charAt(i));
+            current = current.next;
+        }
+
+        // Step 2: Find middle using Fast & Slow pointer
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Step 3: Reverse second half
+        Node secondHalf = reverse(slow);
+
+        // Step 4: Compare first half and reversed second half
+        Node firstHalf = head;
+        Node tempSecond = secondHalf;
+
+        while (tempSecond != null) {
+            if (firstHalf.data != tempSecond.data) {
+                return false;
+            }
+            firstHalf = firstHalf.next;
+            tempSecond = tempSecond.next;
+        }
+
+        return true;
+    }
+
+    // Function to reverse linked list
+    public static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
+        Node nextNode;
+
+        while (current != null) {
+            nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+        }
+
+        return prev;
+    }
+
+    // Main Method
     public static void main(String[] args) {
 
-        // Define the input string to validate
-        String input = "civic";
+        Scanner scanner = new Scanner(System.in);
 
-        // Create a Queue to store characters in FIFO order
-        Queue<Character> queue = new LinkedList<>();
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
 
-        // Create a Stack to store characters in LIFO order
-        Stack<Character> stack = new Stack<>();
-
-        // Insert each character into both queue and stack
-        for (char c : input.toCharArray()) {
-            queue.add(c);
-            stack.push(c);
+        if (isPalindrome(input)) {
+            System.out.println("Palindrome ✅");
+        } else {
+            System.out.println("Not a Palindrome ❌");
         }
 
-        // Flag to track palindrome status
-        boolean isPalindrome = true;
-
-        // Compare characters until the queue becomes empty
-        while (!queue.isEmpty()) {
-
-            if (queue.remove() != stack.pop()) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        // Display result
-        System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+        scanner.close();
     }
 }
